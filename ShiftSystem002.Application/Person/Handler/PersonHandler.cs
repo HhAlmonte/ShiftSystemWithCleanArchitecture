@@ -10,8 +10,7 @@ namespace ShiftSystem002.Application.Person.Handler
     {
         Task<PersonDto> GetById(int id);
         Task<List<PersonDto>> Get(int top = 50);
-        Task<PersonDto> Create(PersonDto personDto);
-        Task<PersonDto> GetPersonFromAnalyzeResult(AnalyzeResult analyzeResult);
+        Task<ResponsePersonDto> Create(PersonDto personDto);
     }
 
     public class PersonHandler : IPersonHandler
@@ -29,7 +28,7 @@ namespace ShiftSystem002.Application.Person.Handler
             _azureFormRecognizedService = azureFormRecognizedService;
         }
 
-        public async Task<PersonDto> Create(PersonDto personDto)
+        public async Task<ResponsePersonDto> Create(PersonDto personDto)
         {
             var azureConfig = new AzureConfig
             {
@@ -50,7 +49,7 @@ namespace ShiftSystem002.Application.Person.Handler
 
             person = await _personService.Create(person);
 
-            return _mapper.Map(person, personDto);
+            return _mapper.Map<ResponsePersonDto>(person);
         }
 
         public async Task<List<PersonDto>> Get(int top = 50)
@@ -65,15 +64,6 @@ namespace ShiftSystem002.Application.Person.Handler
         public async Task<PersonDto> GetById(int id)
         {
             var person = await _personService.GetyById(id);
-
-            var personDto = _mapper.Map<PersonDto>(person);
-
-            return personDto;
-        }
-
-        public async Task<PersonDto> GetPersonFromAnalyzeResult(AnalyzeResult analyzeResult)
-        {
-            var person = await _personService.GetPersonFromAnalyzeResult(analyzeResult);
 
             var personDto = _mapper.Map<PersonDto>(person);
 

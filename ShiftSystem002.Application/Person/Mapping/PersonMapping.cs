@@ -9,6 +9,8 @@ namespace ShiftSystem002.Application.Person.Mapping
             CreateMap<Dto.PersonDto, Domain.Entities.Person>();
 
             CreateMap<Domain.Entities.Person, Dto.PersonDto>();
+
+            CreateMap<Domain.Entities.Person, Dto.ResponsePersonDto>();
         }
     }
 }

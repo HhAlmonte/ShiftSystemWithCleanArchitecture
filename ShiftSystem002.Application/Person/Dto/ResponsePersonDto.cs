@@ -7,9 +7,10 @@ using System.Threading.Tasks;
 
 namespace ShiftSystem002.Application.Person.Dto
 {
-    public class PersonUriDto : BaseDto
+    public class ResponsePersonDto : BaseDto
     {
-        public Uri FileUri { get; set; }
+        public string DNI { get; set; }
+        public string FullName { get; set; }
         public int Age { get; set; }
         public decimal Height { get; set; }
         public decimal Weight { get; set; }
