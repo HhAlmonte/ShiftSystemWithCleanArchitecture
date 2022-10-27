@@ -40,10 +40,10 @@ namespace ShiftSystem002.Api.Controllers
             return Ok(personQueues);
         }
 
-        [HttpGet("getNext")]
-        public async Task<IActionResult> GetNext()
+        [HttpGet("getNext/{id}")]
+        public async Task<IActionResult> GetNext(int QueueId)
         {
-            var personQueue = await _personQueueHandler.GetNext();
+            var personQueue = await _personQueueHandler.GetNext(QueueId);
 
             if (personQueue == null) return NoContent();
 

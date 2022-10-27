@@ -8,7 +8,7 @@ namespace ShiftSystem002.Application.PersonQueue.Handler
 {
     public interface IPersonQueueHandler : IBaseCrudHandler<PersonQueueDto, Domain.Entities.PersonQueue>
     {
-        Task<PersonQueueDto> GetNext();
+        Task<PersonQueueDto> GetNext(int QueueId);
         Task<PersonQueueDto> UpdateStatusInPersonQueue(int id, Domain.Enums.Status status);
     }
 
@@ -56,12 +56,12 @@ namespace ShiftSystem002.Application.PersonQueue.Handler
             return await Task.FromResult(_mapper.Map<List<PersonQueueDto>>(result));
         }
 
-        public async Task<PersonQueueDto> GetNext()
+        public async Task<PersonQueueDto> GetNext(int QueueId)
         {
             var result = _crudService.Get()
                 .Result
                 .OrderBy(x => x.Conditions)
-                .Where(x => x.Status != Domain.Enums.Status.Attended);
+                .Where(x => x.Status != Domain.Enums.Status.Attended && x.QueueLineId == QueueId);
 
             return await Task.FromResult(_mapper.Map<PersonQueueDto>(result.First()));
         }
