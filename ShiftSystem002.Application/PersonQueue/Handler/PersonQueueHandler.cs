@@ -15,10 +15,17 @@ namespace ShiftSystem002.Application.PersonQueue.Handler
     public class PersonQueueHandler : BaseCrudHandler<PersonQueueDto, Domain.Entities.PersonQueue>, IPersonQueueHandler
     {
         private new readonly IPersonQueueService _crudService;
+        private readonly IUtils _utils;
+        private readonly IPersonService _personService;
         private new readonly IMapper _mapper;
 
-        public PersonQueueHandler(IPersonQueueService crudService, IMapper mapper) : base(crudService, mapper)
+        public PersonQueueHandler(IPersonQueueService crudService,
+                                  IMapper mapper,
+                                  IUtils utils,
+                                  IPersonService personService) : base(crudService, mapper)
         {
+            _personService = personService;
+            _utils = utils;
             _crudService = crudService;
             _mapper = mapper;
         }
@@ -28,6 +35,13 @@ namespace ShiftSystem002.Application.PersonQueue.Handler
             var entity = _mapper.Map<Domain.Entities.PersonQueue>(dto);
 
             if (await IsPersonInQueue(dto)) throw new Exception($"Person with id: {dto.PersonId} already in queue");
+
+            /*var person = await _personService.GetyById(dto.PersonId);
+
+            if (await _utils.IsOverweight(person.Height, person.Weight))
+            {
+                entity.Conditions = Domain.Enums.Conditions.OverWeight;
+            }*/
 
             var result = await _crudService.Create(entity);
 
