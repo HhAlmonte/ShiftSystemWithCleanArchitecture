@@ -8,14 +8,11 @@ namespace ShiftSystem.Infrastructure.Services.Modules_Services
 {
     public class PersonService : IPersonService
     {
-        private readonly IShiftSystemDbContext _dbContext;/*
-        private readonly IAzureFormRecognizerService _azureFormRecognizerService;*/
-
-        public PersonService(IShiftSystemDbContext dbContext,
-                            IAzureFormRecognizerService azureFormRecognizerService)
+        private readonly IShiftSystemDbContext _dbContext;
+        
+        public PersonService(IShiftSystemDbContext dbContext)
         {
-            _dbContext = dbContext;/*
-            _azureFormRecognizerService = azureFormRecognizerService;*/
+            _dbContext = dbContext;
         }
 
         public async Task<Person> Create(Person person)
@@ -25,7 +22,6 @@ namespace ShiftSystem.Infrastructure.Services.Modules_Services
             return person;
         }
 
-
         public async Task<List<Person>> Get(int top = 50)
         {
             return await _dbContext.GetDbSet<Person>().Take(top).ToListAsync();
@@ -34,7 +30,6 @@ namespace ShiftSystem.Infrastructure.Services.Modules_Services
         public async Task<Person> GetPersonFromAnalyzeResult(AnalyzeResult analyzeResult)
         {
             var person = new Person();
-
             foreach (AnalyzedDocument document in analyzeResult.Documents)
             {
                 foreach (KeyValuePair<string, DocumentField> fieldKvp in document.Fields)
@@ -42,17 +37,20 @@ namespace ShiftSystem.Infrastructure.Services.Modules_Services
                     string fieldName = fieldKvp.Key;
                     DocumentField field = fieldKvp.Value;
 
-                    if (fieldName == "nombre") person.FullName = field.Value.ToString();
+                    if (fieldName == "nombre") person.FullName = field.Content.ToString();
                     if (fieldName == "cedula") person.DNI = field.Content.ToString();
                 }
             }
-
             return await Task.FromResult(person);
         }
 
-        public Task<Person> GetyById(int id)
+        public async Task<Person> GetyById(int id)
         {
-            return _dbContext.GetDbSet<Person>().FirstOrDefaultAsync(x => x.Id == id);
+            var person = await _dbContext.GetDbSet<Person>().FirstOrDefaultAsync(x => x.Id == id);
+
+            if (person == null) throw new Exception("Person not found");
+
+            return person;
         }
     }
 }

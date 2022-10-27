@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ShiftSystem002.Application.Interfaces;
 using ShiftSystem002.Application.Person.Dto;
 using ShiftSystem002.Application.Person.Handler;
+using ShiftSystem002.Domain.Entities;
 
 namespace ShiftSystem002.Api.Controllers
 {
@@ -9,19 +11,24 @@ namespace ShiftSystem002.Api.Controllers
     public class PersonController : ControllerBase
     {
         private readonly IPersonHandler _personHandler;
+        private readonly IAzureFormRecognizedService _azureFormRecognized;
 
-        public PersonController(IPersonHandler personHandler)
+        public PersonController(IPersonHandler personHandler, IAzureFormRecognizedService azureFormRecognized)
         {
             _personHandler = personHandler;
+            _azureFormRecognized = azureFormRecognized;
         }
+        
 
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] PersonDto personDto)
         {
             try
-            {
+            {   
                 var person = await _personHandler.Create(personDto);
+                
                 return Ok(person);
+                
             }
             catch (Exception ex)
             {

@@ -1,12 +1,11 @@
 ﻿using Azure;
 using Azure.AI.FormRecognizer.DocumentAnalysis;
 using ShiftSystem002.Application.Interfaces;
-using ShiftSystem002.Domain.Base;
 using ShiftSystem002.Domain.Entities;
 
 namespace ShiftSystem.Infrastructure.Services.Modules_Services
 {
-    public class AzureFormRecognizerService : IAzureFormRecognizerService
+    public class AzureFormRecognizedService : IAzureFormRecognizedService
     {
         public async Task<AnalyzeResult> GetAnalyzeResultValue(AzureConfig azureConfig, Uri fileUri)
         {

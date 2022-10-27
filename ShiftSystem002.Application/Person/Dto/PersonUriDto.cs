@@ -1,13 +1,15 @@
 ﻿using ShiftSystem002.Application.Generic.Dtos;
-using ShiftSystem002.Domain.Base;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace ShiftSystem002.Application.Person.Dto
 {
-    public class PersonDto : BaseDto
+    public class PersonUriDto : BaseDto
     {
-        /*public string DNI { get; set; }
-        public string FullName { get; set; }*/
-        public Uri fileUri { get; set; }
+        public Uri FileUri { get; set; }
         public int Age { get; set; }
         public decimal Height { get; set; }
         public decimal Weight { get; set; }

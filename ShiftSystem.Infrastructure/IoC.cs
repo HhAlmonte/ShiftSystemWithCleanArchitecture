@@ -11,7 +11,7 @@ namespace ShiftSystem.Infrastructure
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddTransient<IAzureFormRecognizerService, AzureFormRecognizerService>();
+            services.AddTransient<IAzureFormRecognizedService, AzureFormRecognizedService>();
 
             services.AddTransient<IShiftSystemDbContext, ShiftSystemDbContext>();
 
